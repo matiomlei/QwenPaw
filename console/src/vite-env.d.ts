@@ -11,6 +11,11 @@ declare module "*.less" {
   export default classes;
 }
 
+declare module "*.css?inline" {
+  const content: string;
+  export default content;
+}
+
 interface PyWebViewAPI {
   open_external_link: (url: string) => void;
   save_file: (url: string, filename: string) => Promise<boolean>;

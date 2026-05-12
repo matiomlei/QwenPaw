@@ -1,0 +1,218 @@
+.messageContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+.openuiBlock {
+  width: 100%;
+  max-width: min(1120px, 92%);
+  align-self: center;
+  min-width: 0;
+}
+
+.openuiFallback {
+  width: 100%;
+}
+
+.previewPanel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid var(--openui-border-default);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--openui-foreground);
+  box-shadow: var(--openui-shadow-s);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--openui-highlight-subtle);
+  border-bottom: 1px solid var(--openui-border-default);
+  flex-shrink: 0;
+}
+
+.panelTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.panelTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--openui-text-neutral-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.panelIconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--openui-text-neutral-tertiary);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.panelIconButton:hover {
+  background: var(--openui-highlight);
+  color: var(--openui-text-neutral-primary);
+}
+
+.panelIconButton:focus-visible {
+  outline: 2px solid var(--openui-border-accent-emphasis);
+  outline-offset: 2px;
+}
+
+@keyframes preview-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.previewSpinner {
+  animation: preview-spin 1s linear infinite;
+  color: var(--openui-interactive-accent-default);
+  flex-shrink: 0;
+}
+
+.previewBody {
+  max-height: 560px;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.previewContent {
+  width: 100%;
+  padding: 16px;
+  align-self: flex-start;
+}
+
+.previewSurface {
+  width: 100%;
+  min-width: 0;
+}
+
+.previewSurface > :global(*) {
+  width: 100%;
+  min-width: 0;
+}
+
+.previewSurface :global(.openui-card),
+.previewSurface :global(.openui-section-block),
+.previewSurface :global(.openui-carousel),
+.previewSurface :global(.openui-tabs),
+.previewSurface :global(.openui-table-wrapper),
+.previewSurface :global(.openui-chart-card) {
+  max-width: 100%;
+}
+
+.previewSurface :global(.openui-chart-container) {
+  min-height: 280px;
+}
+
+.previewSurface :global(.openui-line-chart-condensed-container),
+.previewSurface :global(.openui-area-chart-condensed-container),
+.previewSurface :global(.openui-bar-chart-condensed-container),
+.previewSurface :global(.openui-horizontal-bar-chart-container),
+.previewSurface :global(.openui-radar-chart-container-wrapper),
+.previewSurface :global(.openui-pie-chart-container-wrapper),
+.previewSurface :global(.openui-radial-chart-container-wrapper),
+.previewSurface :global(.openui-scatter-chart-container) {
+  width: 100%;
+}
+
+.previewSurface :global(.openui-line-chart-condensed-container-inner),
+.previewSurface :global(.openui-area-chart-condensed-container-inner),
+.previewSurface :global(.openui-bar-chart-condensed-container-inner),
+.previewSurface :global(.openui-line-chart-container-inner),
+.previewSurface :global(.openui-area-chart-container-inner),
+.previewSurface :global(.openui-bar-chart-container-inner) {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+}
+
+.previewSurface :global(.openui-line-chart-condensed-y-axis-container),
+.previewSurface :global(.openui-area-chart-condensed-y-axis-container),
+.previewSurface :global(.openui-bar-chart-condensed-y-axis-container),
+.previewSurface :global(.openui-line-chart-y-axis-container),
+.previewSurface :global(.openui-area-chart-y-axis-container),
+.previewSurface :global(.openui-bar-chart-y-axis-container) {
+  flex: 0 0 auto !important;
+}
+
+.previewSurface :global(.openui-line-chart-condensed),
+.previewSurface :global(.openui-area-chart-condensed),
+.previewSurface :global(.openui-bar-chart-condensed),
+.previewSurface :global(.openui-line-chart-main-container),
+.previewSurface :global(.openui-area-chart-main-container),
+.previewSurface :global(.openui-bar-chart-main-container) {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.previewSurface :global(.openui-table-wrapper),
+.previewSurface :global(.openui-charts-container),
+.previewSurface :global(.openui-carousel-content) {
+  overflow-x: auto;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--openui-text-neutral-tertiary);
+  height: 100%;
+}
+
+.emptyStateIcon {
+  opacity: 0.3;
+  margin-bottom: 4px;
+}
+
+.emptyStateText {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 960px) {
+  .openuiBlock {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .messageContent {
+    gap: 14px;
+  }
+
+  .previewContent {
+    padding: 12px;
+  }
+}

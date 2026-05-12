@@ -6,6 +6,7 @@ This module provides utilities for building system prompts from
 markdown configuration files in the working directory.
 """
 import logging
+import os
 import re
 from pathlib import Path
 
@@ -23,8 +24,103 @@ DEFAULT_SYS_PROMPT = """
 You are a helpful assistant.
 """
 
+OPENUI_QWENPAW_INTEGRATION_GUIDANCE = """
+## QwenPaw OpenUI Integration
+
+Use the official OpenUI general-purpose library prompt below as the
+source of truth. QwenPaw adds only these integration rules:
+
+- You may mix normal prose with OpenUI blocks in the same response.
+- Every OpenUI payload must be wrapped inside a fenced block using:
+  ```openui
+  root = Stack([...])
+  ```
+  or another valid official root form from the prompt below.
+- Put only valid openui-lang inside the ` ```openui ` fence. Do not put prose
+  inside the fence.
+- For casual chat, short factual answers, tool errors, or cases where
+  structured UI does not help, respond with normal text.
+- When the user explicitly asks for OpenUI, UI components, charts, tables,
+  tabs, carousel, forms, steps, dashboards, reports, or layouts, include at
+  least one ` ```openui ` fenced block in the answer. Do not answer with prose
+  alone in those cases.
+- Prefer the official layout primitives from `openuiLibrary`, especially
+  `Stack(...)`, `Card(...)`, `Tabs(...)`, `Accordion(...)`, `Carousel(...)`,
+  `Table(...)`, and the official chart components.
+- A good response shape is: short intro text, then one or more ` ```openui `
+  blocks, then short follow-up text if needed.
+"""
+
 # Backward compatibility alias
 SYS_PROMPT = DEFAULT_SYS_PROMPT
+
+
+def _append_openui_guidance(prompt: str) -> str:
+    """Append OpenUI guidance once, preferring the official prompt file."""
+    if "## QwenPaw OpenUI Integration" in prompt:
+        return prompt
+    official_prompt = _load_official_openui_prompt()
+    guidance_parts = [OPENUI_QWENPAW_INTEGRATION_GUIDANCE.strip()]
+    if official_prompt:
+        guidance_parts.append("## Official OpenUI Library Prompt")
+        guidance_parts.append(official_prompt.strip())
+    else:
+        logger.warning(
+            "Official OpenUI library prompt file not found; using QwenPaw "
+            "integration guidance only.",
+        )
+    return f"{prompt.strip()}\n\n" + "\n\n".join(guidance_parts) + "\n"
+
+
+def _get_openui_prompt_candidates() -> list[Path]:
+    """Return candidate paths for the official OpenUI library prompt file."""
+    repo_root = Path(__file__).resolve().parents[3]
+
+    env_path = os.getenv("OPENUI_PROMPT_PATH") or os.getenv(
+        "OPENUI_CHAT_PROMPT_PATH",
+    )
+    candidates: list[Path] = []
+    if env_path:
+        candidates.append(Path(env_path).expanduser())
+
+    candidates.extend(
+        [
+            Path(__file__).resolve().with_name(
+                "openui_library_system_prompt.txt",
+            ),
+        ],
+    )
+    return candidates
+
+
+def _load_official_openui_prompt() -> str:
+    """Load the official OpenUI library prompt from disk."""
+    for path in _get_openui_prompt_candidates():
+        try:
+            if not path.exists():
+                continue
+            content = read_text_file_with_encoding_fallback(path).strip()
+            if content:
+                content = content.replace(
+                    "You are an AI assistant that responds using openui-lang, "
+                    "a declarative UI language. Your ENTIRE response must be "
+                    "valid openui-lang code — no markdown, no explanations, "
+                    "just openui-lang.",
+                    "You are an AI assistant that may use openui-lang, a "
+                    "declarative UI language, when the response benefits from "
+                    "structured UI. When you use openui-lang in QwenPaw, emit "
+                    "it inside `openui` fenced code blocks and follow the "
+                    "official syntax and component signatures below.",
+                )
+                logger.info("Loaded official OpenUI prompt from %s", path)
+                return content
+        except Exception as exc:
+            logger.warning(
+                "Failed to load official OpenUI prompt from %s: %s",
+                path,
+                exc,
+            )
+    return ""
 
 
 class PromptConfig:
@@ -215,7 +311,7 @@ class PromptBuilder:
 
         if not self.prompt_parts:
             logger.warning("No content loaded from working directory")
-            return DEFAULT_SYS_PROMPT
+            return _append_openui_guidance(DEFAULT_SYS_PROMPT)
 
         # Join all parts with double newlines
         final_prompt = "\n\n".join(self.prompt_parts)
@@ -226,7 +322,7 @@ class PromptBuilder:
             len(final_prompt),
         )
 
-        return final_prompt
+        return _append_openui_guidance(final_prompt)
 
 
 def build_system_prompt_from_working_dir(

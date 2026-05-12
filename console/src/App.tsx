@@ -33,6 +33,7 @@ import { languageApi } from "./api/modules/language";
 import { getApiUrl, getApiToken, clearAuthToken } from "./api/config";
 import "./styles/layout.css";
 import "./styles/form-override.css";
+import "@openuidev/react-ui/components.css";
 
 const antdLocaleMap: Record<string, Locale> = {
   zh: zhCN,

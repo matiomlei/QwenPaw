@@ -207,6 +207,9 @@ describe("ChatPage", () => {
   it("renders AgentScopeRuntimeWebUI", async () => {
     renderWithProviders(<ChatPage />, { initialEntries: ["/chat"] });
     expect(await screen.findByTestId("chat-ui")).toBeInTheDocument();
+    expect(
+      capturedOptions?.cards?.AgentScopeRuntimeResponseCard,
+    ).toBeTruthy();
   });
 
   it("renders child components ModelSelector / ChatActionGroup / ChatHeaderTitle", async () => {

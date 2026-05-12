@@ -1,0 +1,264 @@
+.openui-preview-root,
+.openui-preview-root *,
+.openui-preview-root *::before,
+.openui-preview-root *::after {
+  box-sizing: border-box;
+}
+
+.openui-preview-root {
+  --panel-header-bg: var(--openui-highlight-subtle);
+  --panel-header-border: var(--openui-border-default);
+  --modal-backdrop: var(--openui-overlay);
+  --modal-bg: var(--openui-foreground);
+  --modal-border: var(--openui-border-default);
+  --modal-shadow: var(--openui-shadow-xl);
+  --scrollbar-thumb: var(--openui-text-neutral-tertiary);
+  color: var(--openui-text-neutral-primary);
+  font-family: var(--openui-font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.openui-preview-root ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.openui-preview-root ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.openui-preview-root ::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+
+.panel-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.panel-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--openui-text-neutral-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.panel-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--openui-text-neutral-tertiary);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.panel-icon-btn:hover {
+  background: var(--openui-highlight);
+  color: var(--openui-text-neutral-primary);
+}
+
+.panel-icon-btn:focus-visible {
+  outline: 2px solid var(--openui-border-accent-emphasis);
+  outline-offset: 2px;
+}
+
+@keyframes preview-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.preview-spinner {
+  animation: preview-spin 1s linear infinite;
+  color: var(--openui-interactive-accent-default);
+  flex-shrink: 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: var(--modal-backdrop);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: modal-overlay-in 0.15s ease;
+}
+
+@keyframes modal-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-container {
+  background: var(--modal-bg);
+  border: 1px solid var(--modal-border);
+  border-radius: 16px;
+  box-shadow: var(--modal-shadow);
+  width: min(1400px, 95vw);
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modal-container-in 0.2s ease;
+}
+
+@keyframes modal-container-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-container-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--panel-header-bg);
+  border-bottom: 1px solid var(--panel-header-border);
+  flex-shrink: 0;
+}
+
+.modal-container-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.preview-body {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.preview-content {
+  width: 100%;
+  padding: 16px;
+  align-self: flex-start;
+}
+
+.openui-preview-surface {
+  width: 100%;
+  min-width: 0;
+}
+
+.openui-preview-surface > * {
+  width: 100%;
+  min-width: 0;
+}
+
+.openui-preview-surface .openui-card,
+.openui-preview-surface .openui-section-block,
+.openui-preview-surface .openui-carousel,
+.openui-preview-surface .openui-tabs,
+.openui-preview-surface .openui-table-wrapper,
+.openui-preview-surface .openui-chart-card {
+  max-width: 100%;
+}
+
+.openui-preview-surface .openui-chart-container {
+  min-height: 280px;
+}
+
+.openui-preview-surface .openui-line-chart-condensed-container,
+.openui-preview-surface .openui-area-chart-condensed-container,
+.openui-preview-surface .openui-bar-chart-condensed-container,
+.openui-preview-surface .openui-horizontal-bar-chart-container,
+.openui-preview-surface .openui-radar-chart-container-wrapper,
+.openui-preview-surface .openui-pie-chart-container-wrapper,
+.openui-preview-surface .openui-radial-chart-container-wrapper,
+.openui-preview-surface .openui-scatter-chart-container {
+  width: 100%;
+}
+
+.openui-preview-surface .openui-line-chart-condensed-container-inner,
+.openui-preview-surface .openui-area-chart-condensed-container-inner,
+.openui-preview-surface .openui-bar-chart-condensed-container-inner,
+.openui-preview-surface .openui-line-chart-container-inner,
+.openui-preview-surface .openui-area-chart-container-inner,
+.openui-preview-surface .openui-bar-chart-container-inner {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+}
+
+.openui-preview-surface .openui-line-chart-condensed-y-axis-container,
+.openui-preview-surface .openui-area-chart-condensed-y-axis-container,
+.openui-preview-surface .openui-bar-chart-condensed-y-axis-container,
+.openui-preview-surface .openui-line-chart-y-axis-container,
+.openui-preview-surface .openui-area-chart-y-axis-container,
+.openui-preview-surface .openui-bar-chart-y-axis-container {
+  flex: 0 0 auto !important;
+}
+
+.openui-preview-surface .openui-line-chart-condensed,
+.openui-preview-surface .openui-area-chart-condensed,
+.openui-preview-surface .openui-bar-chart-condensed,
+.openui-preview-surface .openui-line-chart-main-container,
+.openui-preview-surface .openui-area-chart-main-container,
+.openui-preview-surface .openui-bar-chart-main-container {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.openui-preview-surface .openui-table-wrapper,
+.openui-preview-surface .openui-charts-container,
+.openui-preview-surface .openui-carousel-content {
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .modal-container {
+    width: 100vw;
+    height: 95dvh;
+    border-radius: 16px 16px 0 0;
+    animation: modal-container-mobile-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .preview-content {
+    padding: 12px;
+  }
+}
+
+@keyframes modal-container-mobile-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
